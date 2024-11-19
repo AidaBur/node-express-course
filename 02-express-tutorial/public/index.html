@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Express App</title>
+  </head>
+
+  <body>
+    <h1>Welcome to My Express App</h1>
+    <button id="fetchButton">Get Products</button>
+    <div id="productList"></div>
+
+    <script>
+      document
+        .getElementById("fetchButton")
+        .addEventListener("click", function () {
+          fetch("http://localhost:3000/api/v1/products")
+            .then((response) => response.json())
+            .then((data) => {
+              const productList = document.getElementById("productList");
+              productList.innerHTML = "";
+
+              if (data.length > 0) {
+                data.forEach((product) => {
+                  const productElement = document.createElement("div");
+                  productElement.innerHTML = `
+                  <h3>${product.name}</h3>
+                  <p>Price: $${product.price}</p>
+                `;
+                  productList.appendChild(productElement);
+                });
+              } else {
+                productList.innerHTML = "<p>No products found.</p>";
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching data:", error);
+            });
+        });
+    </script>
+  </body>
+</html>
