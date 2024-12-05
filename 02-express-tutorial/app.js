@@ -6,7 +6,7 @@ const peopleRouter = require("./routes/people");
 const app = express();
 console.log("Express Tutorial");
 
-app.use(express.static("./frontend-public"));
+app.use(express.static("./public"));
 
 
 // Middleware logger
@@ -30,10 +30,13 @@ app.get("/", (req, res) => {
 });
 
 
-app.get("/api/v1/products", (req, res) => {
+app.use("/api/v1/products", (req, res) => {
   res.json(products);
 });
 
+app.get("/api/v1/products", (req, res) => {
+  res.json(products);
+});
 
 app.get("/api/v1/products/:productID", (req, res) => {
   const idToFind = parseInt(req.params.productID);
@@ -74,29 +77,6 @@ app.get("/api/v1/query", (req, res) => {
   }
 
   res.json(filteredProducts);
-});
-
-
-app.get("/api/v1/people", (req, res) => {
-  res.json(people);
-});
-
-
-app.post("/api/v1/people", (req, res) => {
-  if (!req.body.name) {
-    return res.status(400).json({ success: false, message: "Please provide a name" });
-  }
-
-  
-  const newPerson = {
-    id: people.length + 1,  
-    name: req.body.name,   
-  };
-
-  people.push(newPerson);
-
-  
-  res.status(201).json({ success: true, name: req.body.name });
 });
 
 
